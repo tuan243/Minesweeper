@@ -25,31 +25,7 @@ namespace Minesweeper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20")]
-        public int rowCount {
-            get {
-                return ((int)(this["rowCount"]));
-            }
-            set {
-                this["rowCount"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20")]
-        public int colCount {
-            get {
-                return ((int)(this["colCount"]));
-            }
-            set {
-                this["colCount"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        [global::System.Configuration.DefaultSettingValueAttribute("24")]
         public int mineNumber {
             get {
                 return ((int)(this["mineNumber"]));
@@ -61,13 +37,37 @@ namespace Minesweeper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Beginner")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Custom")]
         public string Setting {
             get {
                 return ((string)(this["Setting"]));
             }
             set {
                 this["Setting"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int rowCount {
+            get {
+                return ((int)(this["rowCount"]));
+            }
+            set {
+                this["rowCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int colCount {
+            get {
+                return ((int)(this["colCount"]));
+            }
+            set {
+                this["colCount"] = value;
             }
         }
     }

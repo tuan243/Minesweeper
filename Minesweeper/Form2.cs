@@ -13,26 +13,39 @@ namespace Minesweeper
     public partial class Form2 : Form
     {
         public event EventHandler TransferSettingsData;
+        int maxNumberOfMine;
+        private TextBox txt;
+        string val;
 
         public Form2()
         {
             InitializeComponent();
+            
+            int row = (int)numericUpDown1.Value;
+            int col = (int)numericUpDown2.Value;
+            numericUpDown3.Maximum = (int)(0.8 * row * col);
+
+            txt = (TextBox)numericUpDown3.Controls[1];
+            txt.TextChanged += new EventHandler(txt_Changed);
+            txt.Validating += new CancelEventHandler(txt_Validating);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void txt_Changed(object sender, EventArgs e)
         {
-
+            if (txt.Focused)
+            {
+                val = txt.Text;
+            }
         }
 
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        private void txt_Validating(object sender, CancelEventArgs e)
         {
-
+            MessageBox.Show("Val: " + val);
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
 
-        }
+
+
 
         private void customRdBtn_CheckedChanged(object sender, EventArgs e)
         {
@@ -52,7 +65,7 @@ namespace Minesweeper
                 label3.Enabled = true;
                 numericUpDown1.Enabled = true;
                 numericUpDown2.Enabled = true;
-                numericUpDown3.Enabled = true;
+                numericUpDown3.Enabled = true;                
             }
             //Properties.Settings;
         }
@@ -82,6 +95,7 @@ namespace Minesweeper
             }
             else
             {
+                
                 Properties.Settings.Default.Setting = "Custom";
                 Properties.Settings.Default.rowCount = (int)numericUpDown1.Value;
                 Properties.Settings.Default.colCount = (int)numericUpDown2.Value;
@@ -137,6 +151,21 @@ namespace Minesweeper
         private void cancelBtn_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void numericUpDown3_ValueChanged(object sender, EventArgs e)
+        {
+            if (numericUpDown3.Value > numericUpDown3.Maximum)
+            {
+                toolTip1.Active = true;
+            }
+        }
+
+        private void WightHeighChanged(object sender, EventArgs e)
+        {
+            int row = (int)numericUpDown1.Value;
+            int col = (int)numericUpDown2.Value;
+            numericUpDown3.Maximum = (int)(0.8 * row * col);
         }
     }
 }

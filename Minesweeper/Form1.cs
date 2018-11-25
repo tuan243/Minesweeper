@@ -29,6 +29,7 @@ namespace Minesweeper
         Cell[,] cell;
         Random randomizer = new Random();
 
+        //Cell lưu thông tin của một ô.
         public struct Cell
         {
             public bool hasMine;
@@ -45,9 +46,9 @@ namespace Minesweeper
             SetSettingsData();           
             InitializeTheGame();
             CreateTheBoard();
-
         }
 
+        //Gán giá trị của setting vào chương trình.
         void SetSettingsData()
         {
             colCount = Properties.Settings.Default.colCount;
@@ -55,6 +56,7 @@ namespace Minesweeper
             minesNumber = Properties.Settings.Default.mineNumber;
         }
 
+        //Rãi mìn ngẫu nhiên khi tạo bàn
         void RandomMine()
         {
             int temp = minesNumber;
@@ -75,6 +77,7 @@ namespace Minesweeper
             }            
         }
 
+        //Đếm số mìn trong 4 ô góc
         void CountMineInCorner()
         {
             if(cell[0, 0].hasMine == false)
@@ -87,6 +90,7 @@ namespace Minesweeper
                 cell[rowCount - 1, 0].mineCount = (cell[rowCount - 1, 1].hasMine ? 1 : 0) + (cell[rowCount - 2, 1].hasMine ? 1 : 0) + (cell[rowCount - 2, 0].hasMine ? 1 : 0);
         }
 
+        //Đếm số mìn lân cận của tất cả ô.
         void NeighborMineCount()
         {
             List<int> factor = new List<int> { -1, 0, 1 };
@@ -120,6 +124,7 @@ namespace Minesweeper
             }
         }
 
+        //Tạo bàn, gán thông tin cho từng cell.
         void InitializeTheGame()
         {
             button = new MyButton[maxRowCount, maxColCount];
@@ -136,7 +141,7 @@ namespace Minesweeper
                     button[y, x].Width = 21;
                     button[y, x].Height = 21;
                     button[y, x].Location = new Point(x * 21 + 10, y * 21 + 30);                   
-                    button[y, x].MouseUp += Button_Click;
+                    
                     cell[y, x].hasFlaged = false;
                     cell[y, x].hasMine = false;
                     cell[y, x].isOpened = false;
@@ -147,35 +152,15 @@ namespace Minesweeper
             }
         }
 
+        //Rãi mìn, đếm số mìn lân cận, gán cell vào ô tương ứng.
         void CreateTheBoard()
-        {
-            //button = new MyButton[maxRowCount, maxColCount];
-            //cell = new Cell[maxRowCount, maxColCount];
-            //remainingCell = rowCount * colCount - minesNumber;
-            //this.Size = new Size(colCount * 21 + 42, rowCount * 21 + 40 + 70 + 20);
-            //for (int y = 0; y < maxRowCount; y++)
-            //{
-            //    for(int x = 0; x < maxColCount; x++)
-            //    {                   
-            //        button[y, x] = new MyButton();
-            //        button[y, x].Width = 21;
-            //        button[y, x].Height = 21;
-            //        button[y, x].Location = new Point(x * 21 + 10, y * 21 + 30);
-            //        //button[y, x].Parent = this.panel1;                    
-            //        button[y, x].MouseUp += Button_Click;                    
-            //        cell[y, x].hasFlaged = false;
-            //        cell[y, x].hasMine = false;
-            //        cell[y, x].isOpened = false;
-            //        cell[y, x].mineCount = 0;
-            //        cell[y, x].xCoord = x;
-            //        cell[y, x].yCoord = y;
-            //    }
-            //}
+        {            
             for (int y = 0; y < rowCount; y++)
             {
                 for (int x = 0; x < colCount; x++)
                 {
-                    button[y, x].Parent = this.panel1;                    
+                    button[y, x].MouseUp += Button_Click;
+                    button[y, x].Parent = panel1;               
                 }
             }
             RandomMine();
@@ -186,31 +171,33 @@ namespace Minesweeper
                 {
                     button[y, x].Tag = cell[y, x];
                 }
-            }
-            //for (int y = 0; y < rowCount; y++)
-            //{
-            //    for (int x = 0; x < colCount; x++)
-            //    {
-            //        if (cell[y, x].hasMine == true)
-            //            button[y, x].Text = "M";
-            //        else button[y, x].Text = cell[y, x].mineCount.ToString();
-            //    }
-            //}
+            }            
         }
 
+        //Khi click chuột trái vào 1 ô.
         void LeftClickOnCell(int x, int y)
         {
             if (x < 0 || x > colCount - 1 || y < 0 || y > rowCount - 1)
                 return;
+            
+            //Nếu ô chưa mở và chưa có cờ thì mở ô đó.
             if(cell[y, x].isOpened == false && cell[y, x].hasFlaged == false)
             {
                 cell[y, x].isOpened = true;
-                button[y, x].MouseUp -= Button_Click;
+
+                //Bỏ sự kiện click chuột trái và thêm sự kiện double click.
+                button[y, x].MouseUp -= Button_Click;          
                 button[y, x].DoubleClick += Button_DoubleClick;
-                button[y, x].BackColor = Color.AntiqueWhite;                
+
+                button[y, x].BackColor = Color.AntiqueWhite;
+                
+                //Nếu ô đó không có mìn.
                 if (cell[y, x].hasMine == false)
                 {
                     remainingCell--;
+                    
+                    //Nếu các ô xung quanh ô đó cũng không có mìn,
+                    //thì gọi lại hàm trên các ô xung quanh đó.
                     if (cell[y, x].mineCount != 0)
                         button[y, x].Text = cell[y, x].mineCount.ToString();
                     else
@@ -227,14 +214,13 @@ namespace Minesweeper
                 }
                 else
                 {
-                    //button[y, x].Text = "M";
                     isLose = true;
                     GameOver();
                 }
             }
-            //CheckForWinner(x, y);
         }
 
+        //Kiểm tra chiến thắng.
         void CheckForWinner(int x, int y)
         {
             if (remainingCell == 0 && cell[y, x].hasMine == false)
@@ -244,63 +230,61 @@ namespace Minesweeper
             }
         }
 
+        //Lần chọn đầu tiên không thể thua.
+        //Nếu lần đầu chọn trúng ô có mìn,
+        //đưa mìn lên ô góc trên bên trái cùng nhất.
         void PreventLoseOnFirstClick(int x, int y)
         {
             if (cell[y, x].hasMine == true)
-            {
-                cell[y, x].hasMine = false;
+            {                
                 for(int i = 0; i < rowCount; i++)
                 {
-                    bool signal = false;
                     for (int j = 0; j < colCount; j++)
                     {
                         if (cell[i, j].hasMine == false)
                         {
-                            signal = true;
                             cell[i, j].hasMine = true;
+                            cell[y, x].hasMine = false;
+                            
+                            //Đếm lại số mìn lân cận nếu có sự thay đổi vị trí mìn.
                             NeighborMineCount();
-                            break;
+                            return;
                         }
-                    }
-                    if (signal)
-                        break;
+                    }                   
                 }
             }
-            timer1.Start();
-            //for (int i = 0; i < rowCount; i++)
-            //{
-            //    for (int j = 0; j < colCount; j++)
-            //    {
-            //        if (cell[i, j].hasMine == true)
-            //            button[i, j].Text = "M";
-            //        else button[i, j].Text = cell[i, j].mineCount.ToString();
-            //    }
-            //}
+            //Đếm giờ sau khi click lần đầu tiên.
+            timer1.Start();            
         }
 
+        //Thua khi click vào ô có mìn.
         void GameOver()
         {
             if (isLose)
+                //Bùm!!
                 soundPlayer.Play();
             isAlreadyGameOver = true;
+
+            //Dừng đồng hồ.
             timer1.Stop();
             for(int y = 0; y < rowCount; y++)
             {
                 for(int x = 0; x < colCount; x++)
                 {
+                    //Nếu ô có mìn thì hiện mìn ô đó lên.
                     if (cell[y, x].hasMine == true)
                     {
-                        //cell[y, x].isOpened = true;
-                        button[y, x].MouseUp -= Button_Click;
-                        //button[y, x].Text = "M";
+                        //button[y, x].MouseUp -= Button_Click;
                         button[y, x].Image = Properties.Resources.mine;
                         button[y, x].BackColor = Color.AntiqueWhite;
                     }
+                    //Nếu ô đó không có mìn mà có cờ thì hiện hình mìn bị gạch chéo. 
                     else if (cell[y,x].hasFlaged == true)
                     {
                         button[y, x].Image = Properties.Resources.mine_crossed;
                         button[y, x].BackColor = Color.AntiqueWhite;
                     }
+                    //Lấy các sự kiện click của các ô.
                     if (cell[y, x].isOpened == false)
                         button[y, x].MouseUp -= Button_Click;
                     else button[y, x].DoubleClick -= Button_DoubleClick;
@@ -315,9 +299,13 @@ namespace Minesweeper
             isLose = false;
             isAlreadyGameOver = false;
             remainingCell = rowCount * colCount - minesNumber;
+
+            //Reset thời gian.
             min = 0;
             sec = 0;
             timerLbl.Text = min + ":0" + sec;
+
+            //Reset lại các thông số của trò chơi.
             for (int y = 0; y < rowCount; y++)
             {
                 for (int x = 0; x < colCount; x++)
@@ -347,27 +335,28 @@ namespace Minesweeper
         void Button_Click(object sender, MouseEventArgs e)
         {
             
-            Button btn = sender as Button;
-            
+            Button btn = sender as Button;            
             Cell temp = (Cell)btn.Tag;
+
+            //Lấy tọa độ của ô vừa click.
             int x = temp.xCoord;
             int y = temp.yCoord;
-            //MouseEventArgs m = e as MouseEventArgs;
+
             if (e.Button == MouseButtons.Left)
             {
-                //MessageBox.Show("left click!");
+                //Nếu là lần click đầu tiên.
                 if (isFirstClick == true)
                 {
                     PreventLoseOnFirstClick(x, y);
                     isFirstClick = false;
                 }
+                //Gọi hàm click cho chuột trái.
                 LeftClickOnCell(x, y);
                 CheckForWinner(x, y);
             }
-            else
-            if (e.Button == MouseButtons.Right)
+            //Đặt cờ cho chuột phải.
+            else if (e.Button == MouseButtons.Right)
             {
-                //MessageBox.Show("right click!");
                 if (cell[y, x].isOpened == false)
                 {
                     if (cell[y, x].hasFlaged == false)
@@ -400,6 +389,7 @@ namespace Minesweeper
             else return 0;
         }
 
+        //Đếm số cờ xung quanh của một ô.
         int CountNeighborFlag(int x, int y)
         {
             int flagCount = 0;
@@ -413,13 +403,17 @@ namespace Minesweeper
             return flagCount;
         }
 
+        //Khi số cờ xung quanh của 1 ô bằng với số mìn lân cận của ô đó,
+        //Double click vào 1 ô sẽ tự động mở các ô xung quanh còn lại (các ô không có cờ).
         private void Button_DoubleClick(object sender, EventArgs e)
         {
             Button btn = sender as Button;
-
             Cell temp = (Cell)btn.Tag;
+
+            //Lấy tọa độ của ô vừa click.
             int x = temp.xCoord;
             int y = temp.yCoord;
+
             if (CountNeighborFlag(x, y) == cell[y, x].mineCount)
             {
                 LeftClickOnCell(x - 1, y - 1);
@@ -434,9 +428,12 @@ namespace Minesweeper
             CheckForWinner(x, y);
         }
 
+        //Khi ấn vào nút restart.
         private void resBtn_Click(object sender, EventArgs e)
         {
-            if(isAlreadyGameOver==false)
+            //Nếu ấn nút restart trước khi thua, gần phải gọi Gameover()
+            //để dọn dẹp các sự kiện click.
+            if(isAlreadyGameOver == false)
                 GameOver();
             Restart();
         }
@@ -446,6 +443,7 @@ namespace Minesweeper
 
         }
 
+        //Khi click vào Settings.
         private void settingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form2 form2 = new Form2();
@@ -453,13 +451,12 @@ namespace Minesweeper
             form2.ShowDialog();
         }
 
-
-
         private void form2_TransferSettingsData(object sender, EventArgs e)
         {
             int newColCount = Properties.Settings.Default.colCount;
             int newRowCount = Properties.Settings.Default.rowCount;
             minesNumber = Properties.Settings.Default.mineNumber;
+            //Thêm hoặc bớt các ô khi thay đổi kích thước bàn chơi.
             if ((newColCount == colCount) && (newRowCount == rowCount))
             {
                 if (isAlreadyGameOver == false)
@@ -535,14 +532,14 @@ namespace Minesweeper
                             panel1.Controls.Remove(button[y, x]);
                         }
                     }
-                }                
-                colCount = newColCount;
-                rowCount = newRowCount;
-                this.Size = new Size(colCount * 21 + 42, rowCount * 21 + 40 + 70 + 20);
+                }
                 if (isAlreadyGameOver == false)
                     GameOver();
+                colCount = newColCount;
+                rowCount = newRowCount;
+                this.Size = new Size(colCount * 21 + 42, rowCount * 21 + 40 + 70 + 20);                
                 Restart();
-            }
+            }            
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -551,6 +548,7 @@ namespace Minesweeper
             form3.ShowDialog();
         }
 
+        //Sự kiện đếm giờ.
         private void timer1_Tick(object sender, EventArgs e)
         {
             sec++;

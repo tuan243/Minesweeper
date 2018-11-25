@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.beginnerRdBtn = new System.Windows.Forms.RadioButton();
             this.intermediateRdBtn = new System.Windows.Forms.RadioButton();
@@ -40,6 +41,7 @@
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.okBtn = new System.Windows.Forms.Button();
             this.cancelBtn = new System.Windows.Forms.Button();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
@@ -107,7 +109,6 @@
             this.label2.Size = new System.Drawing.Size(68, 13);
             this.label2.TabIndex = 0;
             this.label2.Text = "Width (9-30):";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
@@ -139,6 +140,7 @@
             0,
             0,
             0});
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.WightHeighChanged);
             // 
             // numericUpDown2
             // 
@@ -161,6 +163,7 @@
             0,
             0,
             0});
+            this.numericUpDown2.ValueChanged += new System.EventHandler(this.WightHeighChanged);
             // 
             // numericUpDown3
             // 
@@ -178,11 +181,13 @@
             this.numericUpDown3.Name = "numericUpDown3";
             this.numericUpDown3.Size = new System.Drawing.Size(59, 20);
             this.numericUpDown3.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.numericUpDown3, "haha");
             this.numericUpDown3.Value = new decimal(new int[] {
             10,
             0,
             0,
             0});
+            this.numericUpDown3.ValueChanged += new System.EventHandler(this.numericUpDown3_ValueChanged);
             // 
             // okBtn
             // 
@@ -203,6 +208,17 @@
             this.cancelBtn.Text = "Cancel";
             this.cancelBtn.UseVisualStyleBackColor = true;
             this.cancelBtn.Click += new System.EventHandler(this.cancelBtn_Click);
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.Active = false;
+            this.toolTip1.AutomaticDelay = 0;
+            this.toolTip1.AutoPopDelay = 5000;
+            this.toolTip1.InitialDelay = 0;
+            this.toolTip1.IsBalloon = true;
+            this.toolTip1.ReshowDelay = 100;
+            this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.toolTip1.ToolTipTitle = "Value out of range";
             // 
             // Form2
             // 
@@ -226,6 +242,7 @@
             this.MinimizeBox = false;
             this.Name = "Form2";
             this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Settings";
             this.Load += new System.EventHandler(this.Form2_Load);
@@ -251,5 +268,6 @@
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.Button okBtn;
         private System.Windows.Forms.Button cancelBtn;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

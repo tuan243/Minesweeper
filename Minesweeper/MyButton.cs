@@ -30,7 +30,7 @@ namespace Minesweeper
             //base.ForeColor = _fore;
             base.FlatAppearance.BorderColor = _border;
             base.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            base.SetStyle(ControlStyles.Selectable, false);
+            //base.SetStyle(ControlStyles.Selectable, false);
             base.Margin = new Padding(0);
             base.SetStyle(ControlStyles.StandardClick | ControlStyles.StandardDoubleClick, true);
             //base.Padding = _padding;
@@ -42,32 +42,32 @@ namespace Minesweeper
             base.BackColor = System.Drawing.Color.CornflowerBlue;
         }
 
-        protected override void OnControlAdded(ControlEventArgs e)
-        {
-            base.OnControlAdded(e);
-            //UseVisualStyleBackColor = false;
-        }
+        //protected override void OnControlAdded(ControlEventArgs e)
+        //{
+        //    base.OnControlAdded(e);
+        //    //UseVisualStyleBackColor = false;
+        //}
 
-        protected override void OnMouseEnter(System.EventArgs e)
-        {
-            //base.OnMouseEnter(e);
-            //if (!_active)
-            //    base.FlatAppearance.BorderColor = _activeBorder;
-        }
+        //protected override void OnMouseEnter(System.EventArgs e)
+        //{
+        //    //base.OnMouseEnter(e);
+        //    //if (!_active)
+        //    //    base.FlatAppearance.BorderColor = _activeBorder;
+        //}
 
-        protected override void OnMouseLeave(System.EventArgs e)
-        {
-            //base.OnMouseLeave(e);
-            //if (!_active)
-            //    base.FlatAppearance.BorderColor = _border;
+        //protected override void OnMouseLeave(System.EventArgs e)
+        //{
+        //    //base.OnMouseLeave(e);
+        //    //if (!_active)
+        //    //    base.FlatAppearance.BorderColor = _border;
             
-        }
+        //}
 
-        protected override void OnMouseUp(MouseEventArgs mevent)
-        {
-            base.OnMouseUp(mevent);
-            //base.SetStyle(ControlStyles.Selectable, false);
-        }
+        //protected override void OnMouseUp(MouseEventArgs mevent)
+        //{
+        //    base.OnMouseUp(mevent);
+        //    //base.SetStyle(ControlStyles.Selectable, false);
+        //}
 
         //protected override void OnMouseDown(MouseEventArgs mevent)
         //{
